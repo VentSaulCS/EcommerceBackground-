@@ -8,7 +8,10 @@ router.get('/', async (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
   const categoryTag = await Product.findAll({
-    include: [Category, ProductTag], 
+    include: [Category, {
+      model: Tag,
+      through: ProductTag
+    } ], 
   });
   res.json(categoryTag);
   
@@ -28,7 +31,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // create new product
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const newProduct = await Product.create(req.body, {
 
   });
